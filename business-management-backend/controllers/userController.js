@@ -45,3 +45,26 @@ export const getUser = async(req, res)=>{
         res.status(500).json({ message: "Internal Server Error."});
     }  
 }
+// update user profile controller:
+export const updateUser = async(req, res)=>{
+    const id = req.params.id;
+    const {name, email, password, businessProfile, role, avatar}= req.body;
+    try{
+    const existingUser = await userModel.findById(id);
+    if(!existingUser){
+        return res.status(404).json({message:"User not found."})
+    }
+    existingUser.name = name ||existingUser.name,
+    existingUser.email = email ||existingUser.email,
+    existingUser.password = password ||existingUser.password,
+    existingUser.businessProfile = businessProfile ||existingUser.businessProfile,
+    existingUser.role = role ||existingUser.role,
+    existingUser.avatar = avatar ||existingUser.avatar
+
+    const updatedUser = await existingUser.save();
+    res.json(updatedUser)
+    }
+    catch (err) {
+        res.status(500).json({ message: "Internal Server Error."});
+    } 
+}
