@@ -1,5 +1,5 @@
 import express from "express";
-import { addUser, getUsersWithBusiness } from "../controllers/userController.js";
+import { addUser, getUser, getUsersWithBusiness } from "../controllers/userController.js";
 
 export const userRouter = express.Router();
 const router = express.Router();
@@ -7,3 +7,6 @@ const router = express.Router();
 userRouter.post('/', addUser)
 // GET API for users (employee/employer) associated with business.
 router.get('/business/:businessId', getUsersWithBusiness)
+
+// get user with unique Id:
+userRouter.get('/:id', getUser)
