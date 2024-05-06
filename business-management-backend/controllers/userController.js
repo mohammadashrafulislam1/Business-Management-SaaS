@@ -31,7 +31,7 @@ export const getUsersWithBusiness = async(req, res)=>{
 }
 // get user with unique Id:
 export const getUser = async(req, res)=>{
-    const id = req.params.id;
+    const id = req.params._id;
     try{
        const user = await userModel.findById(id)
        populate('businessProfile', name)
@@ -47,7 +47,7 @@ export const getUser = async(req, res)=>{
 }
 // update user profile controller:
 export const updateUser = async(req, res)=>{
-    const id = req.params.id;
+    const id = req.params._id;
     const {name, email, password, businessProfile, role, avatar}= req.body;
     try{
     const existingUser = await userModel.findById(id);
@@ -65,6 +65,7 @@ export const updateUser = async(req, res)=>{
     res.json(updatedUser)
     }
     catch (err) {
+        console.log(err)
         res.status(500).json({ message: "Internal Server Error."});
     } 
 }
@@ -72,7 +73,7 @@ export const updateUser = async(req, res)=>{
 // delete user Controller
 
 export const deleteUser = async(req, res)=>{
-    const id = req.params.id;
+    const id = req.params._id;
 
     try{
         const deletedUser = await userModel.findByIdAndDelete(id)
@@ -82,6 +83,7 @@ export const deleteUser = async(req, res)=>{
         res.json({message: "Successfully deleted."})
     }
     catch (err) {
+        console.log(err)
         res.status(500).json({ message: "Internal Server Error."});
     } 
 }

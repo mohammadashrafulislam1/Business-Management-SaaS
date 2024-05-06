@@ -6,11 +6,11 @@ const router = express.Router();
 // Post API for user
 userRouter.post('/', addUser)
 // get user with unique Id:
-userRouter.get('/:id', getUser)
+userRouter.get('/:_id', getUser)
 // update user with id route
-userRouter.put('/:id', updateUser)
+userRouter.put('/:_id', updateUser)
 // delete user with id route
-userRouter.delete('/:id', deleteUser)
+userRouter.delete('/:_id', deleteUser)
 
 
 
