@@ -65,5 +65,16 @@ export const updateBusiness = async(req, res)=>{
 }
 
 export const deleteBusiness = async(req, res)=>{
-    
+    const id = req.params.id;
+   try{
+    const deleteBusiness = await businessModel.findByIdAndDelete(id);
+    if(!deleteBusiness){
+        return res.status(404).json({message: "Business not found."})
+     }
+    res.json({message:"Business deleted successfully."})
+   }
+   catch (err){
+    console.log(err)
+    return res.status(500).json({ message: err.message })
+  }
 }
