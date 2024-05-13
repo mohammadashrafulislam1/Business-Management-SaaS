@@ -52,7 +52,7 @@ export const updateBusiness = async(req, res)=>{
     const id = req.params.id;
     const {name, description, logo} = req.body;
     try{
-    const updateBusiness = await businessModel.findByIdAndDelete(id, {name, description, logo}, {new: true})
+    const updateBusiness = await businessModel.findByIdAndUpdate(id, {name, description, logo}, {new: true})
     if(!updateBusiness){
         return res.status(404).json({message: "Business not found."})
      }

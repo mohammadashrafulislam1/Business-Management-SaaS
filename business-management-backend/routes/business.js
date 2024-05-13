@@ -1,5 +1,5 @@
 import express from "express";
-import { addBusiness, getBusiness, singleBusiness, updateBusiness } from "../controllers/businessController.js";
+import { addBusiness, deleteBusiness, getBusiness, singleBusiness, updateBusiness } from "../controllers/businessController.js";
 
 export const businessRouter = express.Router();
 
