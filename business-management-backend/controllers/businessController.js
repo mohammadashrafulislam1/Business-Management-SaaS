@@ -1,5 +1,5 @@
-import { businessModel } from "../models/Business";
-
+import { businessModel } from "../models/Business.js";
+// add business controller
 export const addBusiness = async(req, res)=>{
     try{
     const {name, description, logo, owner} = req.body;
@@ -9,6 +9,18 @@ export const addBusiness = async(req, res)=>{
     const business =new businessModel({name, description, logo, owner});
     const savedBusiness = await business.save()
     res.json(savedBusiness)
+    }
+    catch (e){
+        console.log(e)
+        return res.status(500).json({error: "Internal Server Error."})
+    }
+}
+
+// get businesses controller:
+export const getBusiness = async(req, res)=>{
+    try{
+     const business = await businessModel.find().populate('owner', 'name email')
+     res.json(business)
     }
     catch (e){
         console.log(e)
