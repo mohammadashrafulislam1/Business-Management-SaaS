@@ -63,3 +63,7 @@ export const updateBusiness = async(req, res)=>{
         return res.status(500).json({ message: err.message })
     }
 }
+
+export const deleteBusiness = async(req, res)=>{
+    
+}
