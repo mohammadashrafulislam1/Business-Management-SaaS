@@ -10,9 +10,9 @@ export const addBusiness = async(req, res)=>{
     const savedBusiness = await business.save()
     res.json(savedBusiness)
     }
-    catch (e){
-        console.log(e)
-        return res.status(500).json({error: "Internal Server Error."})
+    catch (err){
+        console.log(err)
+        return res.status(500).json({ message: err.message })
     }
 }
 
@@ -63,7 +63,7 @@ export const updateBusiness = async(req, res)=>{
         return res.status(500).json({ message: err.message })
     }
 }
-
+// business delete controller:
 export const deleteBusiness = async(req, res)=>{
     const id = req.params.id;
    try{
