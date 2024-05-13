@@ -20,6 +20,9 @@ export const addBusiness = async(req, res)=>{
 export const getBusiness = async(req, res)=>{
     try{
      const business = await businessModel.find().populate('owner', 'name email avatar')
+     if(!business){
+        return res.status(404).json({message: "Business not found."})
+     }
      res.json(business)
     }
     catch (err){
