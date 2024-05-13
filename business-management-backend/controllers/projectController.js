@@ -29,3 +29,19 @@ export const getPorjectsWithBusinessId = async(req, res)=>{
         return res.status(500).json({ message: err.message })
     }
 }
+
+// get specific project:
+export const getSpecificProject = async(req, res)=>{
+    const id = req.params.id;
+    try{
+      const project = await projectModel.findById(id).populate('businessProfile', 'name')
+      if (!project) {
+        return res.status(404).json({ message: 'Project not found' });
+      }
+  
+    }
+    catch (err){
+        console.log(err)
+        return res.status(500).json({ message: err.message })
+    }
+}
