@@ -16,3 +16,16 @@ export const addProject = async(req, res)=>{
         return res.status(500).json({ message: err.message })
     }
 }
+
+// get projects under business:
+export const getPorjectsWithBusinessId = async(req, res)=>{
+    const businessId = req.body.businessId;
+    try{
+    const projects = await projectModel.find({businessProfile: businessId})
+    res.json(projects)
+    }
+    catch (err){
+        console.log(err)
+        return res.status(500).json({ message: err.message })
+    }
+}
