@@ -1,6 +1,6 @@
 import express from "express";
-import { projectModel } from "../models/Project";
+import { addProject } from "../controllers/projectController.js";
 
 export const projectRouter = express.Router();
 
-projectRouter.post('/', projectModel)
+projectRouter.post('/', addProject)

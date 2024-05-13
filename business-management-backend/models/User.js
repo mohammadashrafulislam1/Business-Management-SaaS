@@ -23,7 +23,7 @@ const UserSchema = new mongoose.Schema({
     },
     businessProfile:{
         type: mongoose.Schema.Types.ObjectId,
-        ref:'business',
+        ref:'businesses',
     },
     created_at:{
         type:Date,
