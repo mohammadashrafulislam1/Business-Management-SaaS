@@ -22,8 +22,24 @@ export const getBusiness = async(req, res)=>{
      const business = await businessModel.find().populate('owner', 'name email avatar')
      res.json(business)
     }
-    catch (e){
-        console.log(e)
+    catch (err){
+        console.log(err)
+        return res.status(500).json({ message: err.message })
+    }
+}
+
+// get single Business Controller:
+export const singleBusiness = async(req, res)=>{
+    const id = req.params.id;
+    try{
+     const business = await businessModel.findById(id).populate('owner', 'name email avatar')
+     if(!business){
+        return res.status(404).json({message: "Business not found."})
+     }
+     res.json(business)
+    }
+    catch (err){
+        console.log(err)
         return res.status(500).json({ message: err.message })
     }
 }
