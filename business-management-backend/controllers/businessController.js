@@ -46,3 +46,20 @@ export const singleBusiness = async(req, res)=>{
         return res.status(500).json({ message: err.message })
     }
 }
+
+// single business update controller:
+export const updateBusiness = async(req, res)=>{
+    const id = req.params.id;
+    const {name, description, logo} = req.body;
+    try{
+    const updateBusiness = await businessModel.findByIdAndDelete(id, {name, description, logo}, {new: true})
+    if(!updateBusiness){
+        return res.status(404).json({message: "Business not found."})
+     }
+    res.json(updateBusiness)
+    }
+    catch (err){
+        console.log(err)
+        return res.status(500).json({ message: err.message })
+    }
+}
