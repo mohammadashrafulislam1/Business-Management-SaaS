@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import { userRouter } from "./routes/user.js";
 import { businessRouter } from "./routes/business.js";
+import { projectRouter } from "./routes/project.js";
 
 dotenv.config()
 const app = express();
@@ -12,6 +13,7 @@ app.use(cors())
 app.use(express.json())
 app.use('/user', userRouter);
 app.use('/business', businessRouter)
+app.use('/project', projectRouter)
 
 const dbName ="business-management-saas"
 try{
