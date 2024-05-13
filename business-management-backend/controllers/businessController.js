@@ -19,11 +19,11 @@ export const addBusiness = async(req, res)=>{
 // get businesses controller:
 export const getBusiness = async(req, res)=>{
     try{
-     const business = await businessModel.find().populate('owner', 'name email')
+     const business = await businessModel.find().populate('owner', 'name email avatar')
      res.json(business)
     }
     catch (e){
         console.log(e)
-        return res.status(500).json({error: "Internal Server Error."})
+        return res.status(500).json({ message: err.message })
     }
 }
