@@ -46,3 +46,20 @@ export const getSpecificProject = async(req, res)=>{
         return res.status(500).json({ message: err.message })
     }
 }
+
+// update project controller
+export const updateProject = async(req, res)=>{
+    const id = req.params.id;
+    const {name, description, budget, deadline} = req.body;
+    try{
+    const updatedProject = await projectModel.findByIdAndUpdate(id, {name, description, budget, deadline}, {new: true})
+    if (!updatedProject) {
+        return res.status(404).json({ message: 'Project not found' });
+      }
+    res.json(updatedProject)
+    }
+    catch (err){
+        console.log(err)
+        return res.status(500).json({ message: err.message })
+    }
+}
