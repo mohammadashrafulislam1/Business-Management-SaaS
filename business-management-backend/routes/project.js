@@ -1,11 +1,15 @@
 import express from "express";
-import { addProject, getPorjectsWithBusinessId } from "../controllers/projectController.js";
+import { addProject, getPorjectsWithBusinessId,getSpecificProject } from "../controllers/projectController.js";
 
 export const projectRouter = express.Router();
+
 
 
 // post Project
 projectRouter.post('/', addProject)
 
 // get projects with businessId:
-projectRouter.get('/:businessId', getPorjectsWithBusinessId)
+projectRouter.get('/business/:businessId', getPorjectsWithBusinessId)
+
+// get specific project with id:
+projectRouter.get('/:id', getSpecificProject)

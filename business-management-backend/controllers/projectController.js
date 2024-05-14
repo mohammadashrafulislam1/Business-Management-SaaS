@@ -19,7 +19,8 @@ export const addProject = async(req, res)=>{
 
 // get projects under business:
 export const getPorjectsWithBusinessId = async(req, res)=>{
-    const businessId = req.body.businessId;
+    const businessId = req.params.businessId;
+    console.log(businessId)
     try{
     const projects = await projectModel.find({businessProfile: businessId})
     res.json(projects)
