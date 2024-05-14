@@ -63,3 +63,16 @@ export const updateProject = async(req, res)=>{
         return res.status(500).json({ message: err.message })
     }
 }
+
+// Delete project controller:
+export const deleteProject = async(req, res)=>{
+    const id = req.params.id;
+    try{
+     const deletedProject = await projectModel.findByIdAndDelete(id);
+     res.json({message: "Project deleted successfully."})
+    }
+    catch (err){
+        console.log(err)
+        return res.status(500).json({ message: err.message })
+    }
+}
