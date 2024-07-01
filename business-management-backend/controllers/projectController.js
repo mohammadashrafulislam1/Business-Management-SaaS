@@ -155,6 +155,39 @@ export const deleteTaskToProject = async(req, res)=>{
     }
 }
 
+// Assign Task (Manager)
+export const assignTask = async (req, res) => {
+    const { projectId, taskId } = req.params;
+    const { assigneeId } = req.body; // Assuming assigneeId is sent in the request body
+    try {
+      const project = await projectModel.findById(projectId);
+      const task = project.tasks._id(taskId);
+      if (!task) {
+        return res.status(404).json({ message: 'Task not found' });
+      }
+  
+      // Check if the authenticated user is authorized to assign tasks (manager/owner)
+      if (req.user.role !== 'manager' && req.user.role !== 'owner') {
+        return res.status(403).json({ message: 'Not authorized to assign tasks' });
+      }
+  
+      // Check if assigneeId is provided and is valid
+      if (!assigneeId) {
+        return res.status(400).json({ message: 'Assignee ID is required' });
+      }
+  
+      // Set the assignee for the task
+      task.assignee = assigneeId;
+      await project.save();
+  
+      res.json({ message: 'Task assigned successfully', task });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ message: err.message });
+    }
+  };
+  
+
 // Start Task timer:
 export const startTaskTimer = async(req, res)=>{
     const {projectId, taskId} = req.params;

@@ -10,6 +10,10 @@ const TasksSchema = new mongoose.Schema({
         type: String,
         require: true
     },
+    assignee: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'users', // Reference to the User model
+      },
     startTime: Date,
     endTime: Date,
     duration:Number,
