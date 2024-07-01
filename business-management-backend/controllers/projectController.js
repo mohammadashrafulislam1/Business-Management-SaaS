@@ -108,6 +108,35 @@ export const addTaskToProject = async(req, res)=>{
     }
 }
 
+// update task - project:
+export const updateTaskToProject = async(req, res)=>{
+    const {projectId, taskId} = req.params;
+    const {title, description} =req.body;
+    if(!title || !description){
+        return res.status(404).json({message: "Required fields are missing."})
+       }
+    try{
+        const project = await projectModel.findById(projectId);
+        if (!project) {
+           return res.status(404).json({ message: 'Project not found' });
+         }
+         // Find task by ID
+         const task = project.tasks._id(taskId);
+         if (!task) {
+             return res.status(404).json({ message: 'Task not found' });
+         }
+       task.title=title,
+       task.description=description
+       
+       await project.save()
+       res.json(project)
+    }
+    catch (err){
+           console.log(err)
+           return res.status(500).json({ message: err.message })
+       }
+}
+
 // Start Task timer:
 export const startTaskTimer = async(req, res)=>{
     const {projectId, taskId} = req.params;
