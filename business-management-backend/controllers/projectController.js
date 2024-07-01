@@ -102,5 +102,23 @@ export const startTaskTimer = async(req, res)=>{
 
 // Stop Task timer:
 export const stopTaskTimer = async(req, res)=>{
-    
+    const {projectId, taskId} = req.params;
+    try{
+     const project = await projectModel.findById(projectId);
+     const task = project.tasks._id(taskId)
+     if(!task){
+        return res.status(404).json({message: "Task not round"})
+     }
+     if (!task.startTime) {
+        return res.status(400).json({ message: 'Task timer is not started' });
+        }
+    task.endTime= now Date();
+    const duration = Math.floor((task.endTime - task.startTime) / (1000 * 60)); // Calculate duration in minutes
+    task.duration=duration;
+    await project.save();
+    }
+    catch (err){
+        console.log(err)
+        return res.status(500).json({ message: err.message })
+    }
 }
