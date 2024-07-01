@@ -115,6 +115,8 @@ export const stopTaskTimer = async(req, res)=>{
     task.endTime= now Date();
     const duration = Math.floor((task.endTime - task.startTime) / (1000 * 60)); // Calculate duration in minutes
     task.duration=duration;
+    // Update total hours for the project
+    project.totalHours = (project.totalHours || 0) + (duration / 60); // Convert minutes to hours and add to totalHours
     await project.save();
     res.json({ message: 'Task timer stopped successfully', duration });
     }

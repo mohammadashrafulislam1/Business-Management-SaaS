@@ -36,6 +36,10 @@ const ProjectSchema = new mongoose.Schema({
         ref:'business',
     },
     tasks:[TasksSchema],
+    totalHours: {
+        type: Number,
+        default: 0,
+    },
     created_at:{
         type:Date,
         default:Date.now

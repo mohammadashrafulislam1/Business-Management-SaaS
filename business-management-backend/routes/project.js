@@ -1,5 +1,5 @@
 import express from "express";
-import { addProject, deleteProject, getPorjectsWithBusinessId,getSpecificProject, updateProject } from "../controllers/projectController.js";
+import { addProject, deleteProject, getPorjectsWithBusinessId,getSpecificProject, startTaskTimer, stopTaskTimer, updateProject } from "../controllers/projectController.js";
 
 export const projectRouter = express.Router();
 
@@ -17,3 +17,9 @@ projectRouter.put('/:id', updateProject)
 
 // delete project route:
 projectRouter.delete('/:id', deleteProject)
+
+// Start Task timer:
+projectRouter.put('/:projectId/tasks/:taskId/start', startTaskTimer);
+
+// stop Task timer:
+projectRouter.put('/:projectId/tasks/:taskId/stop', stopTaskTimer)
