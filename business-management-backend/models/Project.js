@@ -10,8 +10,8 @@ const TasksSchema = new mongoose.Schema({
         type: String,
         require: true
     },
-    startDate: Date,
-    endDate: Date,
+    startTime: Date,
+    endTime: Date,
     duration:Number,
 })
 

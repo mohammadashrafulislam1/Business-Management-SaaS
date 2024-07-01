@@ -80,3 +80,27 @@ export const deleteProject = async(req, res)=>{
     }
 }
 
+// Start Task timer:
+export const startTaskTimer = async(req, res)=>{
+    const {projectId, taskId} = req.params;
+    try{
+     const project = await projectModel.findById(projectId);
+     const task = project.tasks._id(taskId)
+     if(!task){
+        return res.status(404).json({message: "Task not round"})
+     }
+     if (task.startTime) {
+        return res.status(400).json({ message: 'Task timer already started' });
+        }
+    res.json({ message: 'Task timer started successfully' })
+    }
+    catch (err){
+        console.log(err)
+        return res.status(500).json({ message: err.message })
+    }
+}
+
+// Stop Task timer:
+export const stopTaskTimer = async(req, res)=>{
+    
+}
