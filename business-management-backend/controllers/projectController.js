@@ -79,7 +79,34 @@ export const deleteProject = async(req, res)=>{
         return res.status(500).json({ message: err.message })
     }
 }
-
+// Add task to project:
+export const addTaskToProject = async(req, res)=>{
+    const projectId = req.params;
+    const {title, description} =req.body;
+    if(!title || !description){
+        return res.status(404).json({message: "Required fields are missing."})
+       }
+    try{
+     const project = await projectModel.findById(projectId);
+     if (!project) {
+        return res.status(404).json({ message: 'Project not found' });
+      }
+    // Create new task
+    const newTask = {
+        title,
+        description,
+        startTime: null,
+        endTime: null,
+    };
+    project.tasks.push(newTask)
+    await project.save()
+    res.json(project)
+    }
+    catch (err){
+        console.log(err)
+        return res.status(500).json({ message: err.message })
+    }
+}
 // Start Task timer:
 export const startTaskTimer = async(req, res)=>{
     const {projectId, taskId} = req.params;
