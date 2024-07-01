@@ -1,5 +1,7 @@
 import { populate } from "dotenv";
 import { userModel } from "../models/User.js";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
 export const addUser = async(req, res)=>{
     try{
@@ -7,15 +9,53 @@ export const addUser = async(req, res)=>{
      if(!name || !email || !password || !role){
         return res.status(404).json({error: "Required Fields are missing"})
      }
-     const user =new userModel({name, email, password, avatar, role, businessProfile});
+     console.log(password)
+     const hashedPassword = await bcrypt.hash(password, 10);
+     const user =new userModel({name, email, password:hashedPassword, avatar, role, businessProfile});
      const savedUser = await user.save();
-     res.json(savedUser)
+     //  JWT
+     const token = jwt.sign(
+       { email: savedUser.email, id: savedUser._id },
+       process.env.JWT_TOKEN,
+       { expiresIn: "4d" }
+     );
+     console.log({hashedPassword, savedUser, token})
+     res.json({savedUser, token})
     }
     catch (e){
         console.log(e)
         return res.status(500).json({error: "Internal Server Error."})
     }
 }
+
+// Login User Function
+export const loginUser = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        if (!email || !password) {
+            return res.status(400).json({ error: "Email and Password are required" });
+        }
+        const user = await userModel.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+            return res.status(401).json({ error: "Invalid Password" });
+        }
+        // JWT
+        const token = jwt.sign(
+            { email: user.email, id: user._id },
+            process.env.JWT_TOKEN,
+            { expiresIn: "4d" }
+        );
+        res.json({ user, token });
+    } catch (e) {
+        console.log(e);
+        return res.status(500).json({ error: "Internal Server Error." });
+    }
+};
+
 
 // get all users (employee/employer) associated with business:
 export const getUsersWithBusiness = async(req, res)=>{

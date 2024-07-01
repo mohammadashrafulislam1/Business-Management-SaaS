@@ -24,10 +24,6 @@ catch (error){
    console.log(error)
 }
 
-app.get('/', ()=>{
-    console.log("App is running.")
-})
-
-app.listen(8000, ()=>{
-    console.log("App is listening on port 8000.")
+app.listen(3000, ()=>{
+    console.log("App is listening on port 3000.")
 })

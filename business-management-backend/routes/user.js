@@ -1,10 +1,14 @@
 import express from "express";
-import { addUser, deleteUser, getUser, getUsersWithBusiness, updateUser } from "../controllers/userController.js";
+import { addUser, deleteUser, getUser, getUsersWithBusiness, loginUser, updateUser } from "../controllers/userController.js";
+import { jwtMiddleware } from "../middleware/jwt.js";
 
 export const userRouter = express.Router();
 const router = express.Router();
 // Post API for user
-userRouter.post('/', addUser)
+userRouter.post('/add', addUser)
+
+// Login API for user
+userRouter.post('/login', loginUser)
 // get user with unique Id:
 userRouter.get('/:_id', getUser)
 // update user with id route
