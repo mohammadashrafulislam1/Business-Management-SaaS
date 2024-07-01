@@ -137,6 +137,24 @@ export const updateTaskToProject = async(req, res)=>{
        }
 }
 
+// delete task - project
+export const deleteTaskToProject = async(req, res)=>{
+    const {projectId, taskId} = req.params;
+    try{
+        const project = await projectModel.findById(projectId);
+        if (!project) {
+           return res.status(404).json({ message: 'Project not found' });
+         }
+       project.tasks._id(taskId).delete()
+       await project.save()
+       res.json(project)
+    }
+    catch (err){
+        console.log(err)
+        return res.status(500).json({ message: err.message })
+    }
+}
+
 // Start Task timer:
 export const startTaskTimer = async(req, res)=>{
     const {projectId, taskId} = req.params;
