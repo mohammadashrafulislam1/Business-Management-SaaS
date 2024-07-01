@@ -1,6 +1,20 @@
 import { ObjectId } from "mongodb";
 import mongoose from "mongoose";
 
+const TasksSchema = new mongoose.Schema({
+    title:{
+        type: String,
+        require: true
+    },
+    description:{
+        type: String,
+        require: true
+    },
+    startDate: Date,
+    endDate: Date,
+    duration:Number,
+})
+
 const ProjectSchema = new mongoose.Schema({
     name:{
         type: String,
@@ -21,6 +35,7 @@ const ProjectSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref:'business',
     },
+    tasks:[TasksSchema],
     created_at:{
         type:Date,
         default:Date.now
