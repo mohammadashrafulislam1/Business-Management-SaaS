@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { projectModel } from "../models/Project.js";
 
 // add project controller:
@@ -81,12 +82,13 @@ export const deleteProject = async(req, res)=>{
 }
 // Add task to project:
 export const addTaskToProject = async(req, res)=>{
-    const projectId = req.params;
+    const {projectId} = req.params;
     const {title, description} =req.body;
     if(!title || !description){
         return res.status(404).json({message: "Required fields are missing."})
        }
     try{
+    console.log(req.body)
      const project = await projectModel.findById(projectId);
      if (!project) {
         return res.status(404).json({ message: 'Project not found' });
@@ -121,7 +123,7 @@ export const updateTaskToProject = async(req, res)=>{
            return res.status(404).json({ message: 'Project not found' });
          }
          // Find task by ID
-         const task = project.tasks._id(taskId);
+         const task = project.tasks.find(task => task_id === taskId)
          if (!task) {
              return res.status(404).json({ message: 'Task not found' });
          }
@@ -145,7 +147,15 @@ export const deleteTaskToProject = async(req, res)=>{
         if (!project) {
            return res.status(404).json({ message: 'Project not found' });
          }
-       project.tasks._id(taskId).delete()
+       // Find the index of the task with the given taskId
+       const taskIndex = project.tasks.findIndex(task => task._id == taskId);
+
+       if (taskIndex === -1) {
+           return res.status(404).json({ message: 'Task not found' });
+       }
+
+       // Remove the task from the tasks array
+       project.tasks.splice(taskIndex, 1);
        await project.save()
        res.json(project)
     }
@@ -161,23 +171,22 @@ export const assignTask = async (req, res) => {
     const { assigneeId } = req.body; // Assuming assigneeId is sent in the request body
     try {
       const project = await projectModel.findById(projectId);
-      const task = project.tasks._id(taskId);
+      // Find task by ID
+      const task = project.tasks.id(taskId);
+      console.log(task)
       if (!task) {
-        return res.status(404).json({ message: 'Task not found' });
-      }
-  
-      // Check if the authenticated user is authorized to assign tasks (manager/owner)
-      if (req.user.role !== 'manager' && req.user.role !== 'owner') {
-        return res.status(403).json({ message: 'Not authorized to assign tasks' });
+          return res.status(404).json({ message: 'Task not found' });
       }
   
       // Check if assigneeId is provided and is valid
       if (!assigneeId) {
         return res.status(400).json({ message: 'Assignee ID is required' });
       }
-  
+      // Convert assigneeId to ObjectId
+      const assigneeObjectId = new mongoose.Types.ObjectId(assigneeId);
+
       // Set the assignee for the task
-      task.assignee = assigneeId;
+      task.assignee = assigneeObjectId;
       await project.save();
   
       res.json({ message: 'Task assigned successfully', task });
@@ -193,9 +202,10 @@ export const startTaskTimer = async(req, res)=>{
     const {projectId, taskId} = req.params;
     try{
      const project = await projectModel.findById(projectId);
-     const task = project.tasks._id(taskId)
-     if(!task){
-        return res.status(404).json({message: "Task not round"})
+     // Find task by ID
+     const task = project.tasks.find(task => task._id === taskId)
+     if (!task) {
+         return res.status(404).json({ message: 'Task not found' });
      }
      if (task.startTime) {
         return res.status(400).json({ message: 'Task timer already started' });
@@ -213,14 +223,15 @@ export const stopTaskTimer = async(req, res)=>{
     const {projectId, taskId} = req.params;
     try{
      const project = await projectModel.findById(projectId);
-     const task = project.tasks._id(taskId)
-     if(!task){
-        return res.status(404).json({message: "Task not round"})
+     // Find task by ID
+     const task = project.tasks.find(task => task._id === taskId)
+     if (!task) {
+         return res.status(404).json({ message: 'Task not found' });
      }
      if (!task.startTime) {
         return res.status(400).json({ message: 'Task timer is not started' });
         }
-    task.endTime= now Date();
+    task.endTime= new Date()
     const duration = Math.floor((task.endTime - task.startTime) / (1000 * 60)); // Calculate duration in minutes
     task.duration=duration;
     // Update total hours for the project

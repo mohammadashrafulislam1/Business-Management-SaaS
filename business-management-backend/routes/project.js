@@ -1,6 +1,6 @@
 import express from "express";
 import { addProject, addTaskToProject, assignTask, deleteProject, deleteTaskToProject, getPorjectsWithBusinessId,getSpecificProject, startTaskTimer, stopTaskTimer, updateProject, updateTaskToProject } from "../controllers/projectController.js";
-import { checkUserRole } from "../middleware/role.js";
+import { checkUserRole } from "../middleware/role-verification.js";
 
 export const projectRouter = express.Router();
 
