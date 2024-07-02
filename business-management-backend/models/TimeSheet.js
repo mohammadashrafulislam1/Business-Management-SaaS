@@ -9,10 +9,6 @@ const TimeSheetSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'projects',
         },
-        date: {
-        type: Date,
-        required: true,
-        },
         hours: {
         type: Number,
         required: true,
@@ -23,4 +19,4 @@ const TimeSheetSchema = new mongoose.Schema({
         default: Date.now,
         },
 })
-export const TimesheetModel = mongoose.model('timesheet', TimesheetSchema);
+export const TimesheetModel = mongoose.model('timesheet', TimeSheetSchema);

@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import { userRouter } from "./routes/user.js";
 import { businessRouter } from "./routes/business.js";
 import { projectRouter } from "./routes/project.js";
+import { timeSheetRouter } from "./routes/timesheet.js";
 
 dotenv.config()
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.json())
 app.use('/user', userRouter);
 app.use('/business', businessRouter)
 app.use('/project', projectRouter)
+app.use('/timesheet', timeSheetRouter)
 
 const dbName ="business-management-saas"
 try{
