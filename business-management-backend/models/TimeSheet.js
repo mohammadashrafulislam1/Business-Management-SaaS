@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const TimeSheetScheme = new mongoose.Schema({
+const TimeSheetSchema = new mongoose.Schema({
         employee: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'users',
@@ -23,3 +23,4 @@ const TimeSheetScheme = new mongoose.Schema({
         default: Date.now,
         },
 })
+export const TimesheetModel = mongoose.model('timesheet', TimesheetSchema);
