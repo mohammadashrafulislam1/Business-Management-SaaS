@@ -30,6 +30,7 @@ projectRouter.delete('/:projectId/tasks/:taskId', checkUserRole(['manager', 'own
 // Assign Task (Manager)
 projectRouter.put('/:projectId/tasks/:taskId/assign', checkUserRole(['manager', 'owner']), assignTask);
 
+// -----------
 // Start Task timer:
 projectRouter.put('/:projectId/tasks/:taskId/start', checkUserRole(['manager', 'owner', 'employee']), startTaskTimer);
 

@@ -203,14 +203,18 @@ export const startTaskTimer = async(req, res)=>{
     try{
      const project = await projectModel.findById(projectId);
      // Find task by ID
-     const task = project.tasks.find(task => task._id === taskId)
+     const task = project.tasks.id(taskId);
+      console.log(task)
      if (!task) {
          return res.status(404).json({ message: 'Task not found' });
      }
+     console.log(task.startTime)
      if (task.startTime) {
         return res.status(400).json({ message: 'Task timer already started' });
         }
-    res.json({ message: 'Task timer started successfully' })
+    task.startTime = new Date();
+    await project.save();
+    res.json({ message: 'Task timer started successfully', project})
     }
     catch (err){
         console.log(err)
@@ -224,7 +228,8 @@ export const stopTaskTimer = async(req, res)=>{
     try{
      const project = await projectModel.findById(projectId);
      // Find task by ID
-     const task = project.tasks.find(task => task._id === taskId)
+     const task = project.tasks.id(taskId);
+      console.log(task)
      if (!task) {
          return res.status(404).json({ message: 'Task not found' });
      }
@@ -236,6 +241,7 @@ export const stopTaskTimer = async(req, res)=>{
     task.duration=duration;
     // Update total hours for the project
     project.totalHours = (project.totalHours || 0) + (duration / 60); // Convert minutes to hours and add to totalHours
+    console.log(project)
     await project.save();
     res.json({ message: 'Task timer stopped successfully', duration });
     }
@@ -244,3 +250,4 @@ export const stopTaskTimer = async(req, res)=>{
         return res.status(500).json({ message: err.message })
     }
 }
+
