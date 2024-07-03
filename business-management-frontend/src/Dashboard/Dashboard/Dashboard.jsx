@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { FaHome } from "react-icons/fa";
-import { FaAnglesRight, FaMoneyBill, FaSuitcase } from "react-icons/fa6";
+import { FaAnglesRight, FaArrowRightFromBracket, FaMoneyBill, FaSuitcase } from "react-icons/fa6";
 import { IoIosPeople, IoMdChatbubbles } from "react-icons/io";
 import { MdDashboardCustomize, MdEvent, MdPayment } from "react-icons/md";
 import { RiAdminFill } from "react-icons/ri";
@@ -8,9 +8,12 @@ import { Link, Outlet } from "react-router-dom";
 import { AuthContext } from "../../Components/AuthProvider";
 
 const Dashboard = () => {
-  const { user } = useContext(AuthContext);
+  const { user, logOut } = useContext(AuthContext);
   console.log(user);
   const [show, setShow] = useState(false)
+  const toggleMenu = () => {
+    setShow(prevShow => !prevShow);
+  };
   const dashboardIcon = (
     <div className="flex flex-col gap-3">
       <img
@@ -102,6 +105,9 @@ const Dashboard = () => {
       </li>
     </ul>
   );
+  const hanldeLogOut =()=>{
+    logOut()
+  }
 
   return (
     <>
@@ -113,15 +119,13 @@ const Dashboard = () => {
             <div className="bg-black h-screen p-3 flex flex-col justify-between items-center">
               {dashboardIcon}
               <div className="avatar online relative">
-                <div className="w-8 rounded-full" onMouseEnter={!setShow}>
+                <div className="w-8 rounded-full" onClick={toggleMenu} onMouseEnter={toggleMenu}>
                   <img src={user?.avatar} />
                 </div>
                 <ul className={`menu menu-sm bg-base-200 rounded-box w-56 absolute left-10 top-0 ${show ? "block" : "hidden"}`}>
                 <li>
-                  <a>sm item 1</a>
-                </li>
-                <li>
-                  <a>sm item 2</a>
+                  <a className="flex justify-between font-semibold" onClick={hanldeLogOut}><span>Log Out </span><FaArrowRightFromBracket />
+                  </a>
                 </li>
               </ul>
               </div>
