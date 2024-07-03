@@ -79,6 +79,20 @@ export const loginUser = async (req, res) => {
     }
 };
 
+// Get current user:
+export const getCurrentUser = async (req, res, next) => {
+    try {
+      const user = await userModel.findById(req.decoded.id || req.decoded.userId);
+      console.log("user", req.decoded)
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      res.status(200).json(user);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  };
 
 // get all users (employee/employer) associated with business:
 export const getUsersWithBusiness = async(req, res)=>{

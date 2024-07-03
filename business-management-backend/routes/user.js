@@ -1,5 +1,5 @@
 import express from "express";
-import { addUser, deleteUser, getUser, getUsersWithBusiness, loginUser, updateUser } from "../controllers/userController.js";
+import { addUser, deleteUser, getCurrentUser, getUser, getUsersWithBusiness, loginUser, updateUser } from "../controllers/userController.js";
 import { jwtMiddleware } from "../middleware/jwt.js";
 import { upload } from "../middleware/multer.js";
 
@@ -17,6 +17,8 @@ userRouter.put('/:_id', updateUser)
 // delete user with id route
 userRouter.delete('/:_id', deleteUser)
 
+// get current user
+userRouter.get('/me', jwtMiddleware, getCurrentUser)
 
 
 // GET API for users (employee/employer) associated with business.
