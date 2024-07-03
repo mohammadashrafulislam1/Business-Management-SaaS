@@ -1,11 +1,12 @@
 import express from "express";
 import { addUser, deleteUser, getUser, getUsersWithBusiness, loginUser, updateUser } from "../controllers/userController.js";
 import { jwtMiddleware } from "../middleware/jwt.js";
+import { upload } from "../middleware/multer.js";
 
 export const userRouter = express.Router();
 const router = express.Router();
 // Post API for user
-userRouter.post('/add', addUser)
+userRouter.post('/add', upload.single('avatar'), addUser)
 
 // Login API for user
 userRouter.post('/login', loginUser)

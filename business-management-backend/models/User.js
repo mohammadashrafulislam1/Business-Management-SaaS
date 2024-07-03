@@ -25,6 +25,10 @@ const UserSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref:'business',
     },
+    isActive:{
+        type: Boolean,
+        defaultValue:false
+    },
     created_at:{
         type:Date,
         default:Date.now

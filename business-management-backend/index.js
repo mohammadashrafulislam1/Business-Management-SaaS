@@ -20,7 +20,7 @@ app.use('/timesheet', timeSheetRouter)
 const dbName ="business-management-saas"
 try{
   await mongoose.connect(`mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASS}@cluster0.g2lboph.mongodb.net/${dbName}?retryWrites=true&w=majority&appName=Cluster0`)
-  console.log("connected DB")
+  console.log("connected DB", process.env.API_KEY)
 }
 catch (error){
    console.log(error)

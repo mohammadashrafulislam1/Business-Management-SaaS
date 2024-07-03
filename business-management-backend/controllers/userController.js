@@ -2,31 +2,54 @@ import { populate } from "dotenv";
 import { userModel } from "../models/User.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import { cloudinary } from "../utils/cloudinary.js";
 
-export const addUser = async(req, res)=>{
-    try{
-     const {name, email, password, avatar, role, businessProfile} = req.body;
-     if(!name || !email || !password || !role){
-        return res.status(404).json({error: "Required Fields are missing"})
-     }
-     console.log(password)
-     const hashedPassword = await bcrypt.hash(password, 10);
-     const user =new userModel({name, email, password:hashedPassword, avatar, role, businessProfile});
-     const savedUser = await user.save();
-     //  JWT
-     const token = jwt.sign(
-       { email: savedUser.email, id: savedUser._id },
-       process.env.JWT_TOKEN,
-       { expiresIn: "4d" }
-     );
-     console.log({hashedPassword, savedUser, token})
-     res.json({savedUser, token})
+export const addUser = async (req, res) => {
+    try {
+      // Use Cloudinary to upload the image
+      console.log(req.file.path);
+      const imageResult = await cloudinary.uploader.upload(req.file.path);
+  
+      const { name, email, password, role, businessProfile } = req.body;
+      if (!name || !email || !password || !role) {
+        return res.status(400).json({ error: "Required Fields are missing" });
+      }
+  
+      // Check if the user already exists
+      const existingUser = await userModel.findOne({ email });
+      if (existingUser) {
+        return res.status(400).json({ error: "Email already in use" });
+      }
+  
+      const avatar = imageResult.secure_url;
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const user = new userModel({
+        name,
+        email,
+        password: hashedPassword,
+        avatar,
+        role,
+        businessProfile,
+      });
+      const savedUser = await user.save();
+  
+      // JWT
+      const token = jwt.sign(
+        { email: savedUser.email, id: savedUser._id },
+        process.env.JWT_TOKEN,
+        { expiresIn: "4d" }
+      );
+  
+      console.log({ hashedPassword, savedUser, token });
+      res.status(201).json({ savedUser, token });
+    } catch (e) {
+      console.log(e);
+      if (e.code === 11000) {
+        return res.status(400).json({ error: "Duplicate email error" });
+      }
+      return res.status(500).json({ error: "Internal Server Error." });
     }
-    catch (e){
-        console.log(e)
-        return res.status(500).json({error: "Internal Server Error."})
-    }
-}
+  };
 
 // Login User Function
 export const loginUser = async (req, res) => {
@@ -88,7 +111,7 @@ export const getUser = async(req, res)=>{
 // update user profile controller:
 export const updateUser = async(req, res)=>{
     const id = req.params._id;
-    const {name, email, password, businessProfile, role, avatar}= req.body;
+    const {name, email, password, businessProfile, role, avatar, isActive}= req.body;
     try{
     const existingUser = await userModel.findById(id);
     if(!existingUser){
@@ -99,7 +122,8 @@ export const updateUser = async(req, res)=>{
     existingUser.password = password ||existingUser.password,
     existingUser.businessProfile = businessProfile ||existingUser.businessProfile,
     existingUser.role = role ||existingUser.role,
-    existingUser.avatar = avatar ||existingUser.avatar
+    existingUser.avatar = avatar ||existingUser.avatar,
+    existingUser.isActive === isActive || false
 
     const updatedUser = await existingUser.save();
     res.json(updatedUser)
