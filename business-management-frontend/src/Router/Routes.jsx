@@ -4,6 +4,7 @@ import Dashboard from "../Dashboard/Dashboard/Dashboard";
 import OwnerBoard from "../Dashboard/OwnerBoard/OwnerBoard";
 import Root from "../Dashboard/Root/Root";
 import AddUser from "../Authentication/AddUser/AddUser";
+import LogIn from "../Authentication/LogIn/LogIn";
 
 export const router = createBrowserRouter([
     {
@@ -14,6 +15,10 @@ export const router = createBrowserRouter([
     {
         path:"signup",
         element:<AddUser/>
+    },
+    {
+        path:"login",
+        element:<LogIn/>
     },
     {
         path:'dashboard',

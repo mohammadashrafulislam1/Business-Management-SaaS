@@ -13,8 +13,8 @@ import { Toast } from "primereact/toast";
 import "primereact/resources/themes/saga-blue/theme.css"; // or any other theme you prefer
 import "primereact/resources/primereact.min.css";
 
-const AddUser = () => {
-  const { signUp, user } = useContext(AuthContext);
+const LogIn = () => {
+  const { signIn, user } = useContext(AuthContext);
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
   const toast = useRef(null);
@@ -25,15 +25,13 @@ const AddUser = () => {
     e.preventDefault();
     setLoader(true)
     const form = e.target;
+    console.log(form, form.email.value, form.password.value);
     const formData = new FormData();
     formData.append("email", form.email.value);
-    formData.append("name", form.name.value);
     formData.append("password", form.password.value);
-    formData.append("role", "owner");
-    formData.append("avatar", form.avatar.files[0]);
-    console.log(formData);
+    console.log(formData)
     try {
-     const response = await signUp(formData);
+     const response = await signIn(formData);
      setLoader(false)
      toast.current.show({
       severity: "success",
@@ -56,18 +54,11 @@ const AddUser = () => {
     }
   };
   return (
+   <>
     <div className="flex justify-center gap-20 items-center ml-10">
-      {loader && (<dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle bg-[#0000002c] align-middle items-center" open>
-      <div className="modal-overlay"></div>
-      <div className="modal-box">
-      <span className="loading loading-ring loading-lg"></span>
-      <h3 className="font-bold text-lg">Loading...</h3>
-        {/* You can add additional content or styling here */}
-      </div>
-    </dialog>)}
       {/* form */}
       <div>
-        <h2 className="text-4xl text-center mb-10">Sign Up</h2>
+        <h2 className="text-4xl text-center mb-10">Log In</h2>
         <form action="" onSubmit={handleSubmit}>
           <label className="input input-bordered flex items-center gap-2 md:w-[600px] mb-4">
             <FaEnvelope />
@@ -76,15 +67,6 @@ const AddUser = () => {
               name="email"
               className="grow md:w-[600px]"
               placeholder="Email"
-            />
-          </label>
-          <label className="input input-bordered flex items-center gap-2 md:w-[600px] mb-4">
-            <FaUser />
-            <input
-              type="text"
-              name="name"
-              className="grow md:w-[600px]"
-              placeholder="Full Name"
             />
           </label>
           <label className="input input-bordered flex items-center gap-2 md:w-[600px] mb-4">
@@ -106,11 +88,7 @@ const AddUser = () => {
               </div>
             )}
           </label>
-          <input
-            type="file"
-            name="avatar"
-            className="file-input file-input-bordered w-full mb-4"
-          />
+          
           <label className="input input-bordered flex items-center gap-2 md:w-[600px] mb-4">
             <input
               type="submit"
@@ -120,7 +98,7 @@ const AddUser = () => {
             <FaAngleRight />
           </label>
           <p>
-            Already have an account? <span><Link to="/login">Login</Link></span>
+            Don't have an account? <span><Link to={"/signup"}>SignUp</Link></span>
           </p>
         </form>
       </div>
@@ -134,7 +112,15 @@ const AddUser = () => {
       </div>
       <Toast ref={toast} />
     </div>
+    {loader && (<dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle bg-[#0000002c] align-middle items-center" open>
+      <div className="modal-overlay"></div>
+      <div className="modal-box">
+      <span className="loading loading-ring loading-lg"></span>
+      <h3 className="font-bold text-lg">Loading...</h3>
+        {/* You can add additional content or styling here */}
+      </div>
+    </dialog>)}</>
   );
 };
 
-export default AddUser;
+export default LogIn;
