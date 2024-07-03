@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from "react";
+import { useContext, useRef, useState, useEffect } from "react";
 import {
   FaAngleRight,
   FaEnvelope,
@@ -14,16 +14,29 @@ import "primereact/resources/themes/saga-blue/theme.css"; // or any other theme 
 import "primereact/resources/primereact.min.css";
 
 const AddUser = () => {
-  const { signUp, user } = useContext(AuthContext);
+  const { signUp, user, loader, error, 
+    setLoader } = useContext(AuthContext);
+  useEffect(() => {
+      if (error) {
+        toast.current.show({
+          severity: "error",
+          summary: "Error",
+          detail: error,
+          life: 3000,
+        });
+      }
+  }, [error]);
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
+  useEffect(() => {
+    if (user) {
+      navigate("/dashboard");
+    }
+  }, [user, navigate]);
   const toast = useRef(null);
-  const [loader, setLoader] = useState(false);
-  
   console.log(user)
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoader(true)
     const form = e.target;
     const formData = new FormData();
     formData.append("email", form.email.value);
@@ -34,25 +47,33 @@ const AddUser = () => {
     console.log(formData);
     try {
      const response = await signUp(formData);
-     setLoader(false)
-     toast.current.show({
-      severity: "success",
-      summary: "Success",
-      detail: "User signed up successfully",
-      life: 3000,
-    });
-      console.log(response)
+     console.log(response)
+     if(response.status ===201){
+        toast.current.show({
+          severity: "success",
+          summary: "Success",
+          detail: "User signed up successfully.",
+          life: 3000,
+        });
       form.reset();
-      navigate("/dashboard");
+      navigate("/login");
+      setLoader(false)}
+      else{
+        toast.current.show({
+          severity: "error",
+          summary: "Error",
+          detail: "User sign up Failed",
+          life: 3000,
+        })
+      }
     } catch (e) {
-      console.log(e.response.data);
-      setLoader(false)
       toast.current.show({
         severity: "error",
         summary: "Error",
-        detail: e.response?.data?.error||"User sign up Failed",
+        detail: error||"User sign up Failed",
         life: 3000,
       });
+      setLoader(false)
     }
   };
   return (
@@ -110,6 +131,7 @@ const AddUser = () => {
             type="file"
             name="avatar"
             className="file-input file-input-bordered w-full mb-4"
+            required
           />
           <label className="input input-bordered flex items-center gap-2 md:w-[600px] mb-4">
             <input

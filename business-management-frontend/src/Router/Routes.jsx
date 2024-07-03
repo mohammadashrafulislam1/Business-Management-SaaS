@@ -5,6 +5,7 @@ import OwnerBoard from "../Dashboard/OwnerBoard/OwnerBoard";
 import Root from "../Dashboard/Root/Root";
 import AddUser from "../Authentication/AddUser/AddUser";
 import LogIn from "../Authentication/LogIn/LogIn";
+import PrivateRoute from "./PrivateRoute";
 
 export const router = createBrowserRouter([
     {
@@ -22,7 +23,7 @@ export const router = createBrowserRouter([
     },
     {
         path:'dashboard',
-        element:<Dashboard/>,
+        element:<PrivateRoute><Dashboard/></PrivateRoute>,
         children:[
             {
                 path:"",
