@@ -1,4 +1,5 @@
 import { businessModel } from "../models/Business.js";
+import { cloudinary } from "../utils/cloudinary.js";
 // add business controller
 export const addBusiness = async(req, res)=>{
     try{
@@ -6,7 +7,21 @@ export const addBusiness = async(req, res)=>{
     if(!name, !logo){
         return res.status(404).json({message: "Required fields are missing."})
     }
-    const business =new businessModel({name, description, logo, owner});
+  
+      // Upload logo to Cloudinary
+      const uploadResponse = await cloudinary.uploader.upload(logo, {
+        folder: "business_logos", 
+      });
+  
+      // Now save to MongoDB
+      const business = new businessModel({
+        name,
+        description,
+        logo: uploadResponse.secure_url, // use the uploaded image URL
+        owner,
+      });
+  
+  
     const savedBusiness = await business.save()
     res.json(savedBusiness)
     }
