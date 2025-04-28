@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.p-button-black{
+    background-color: black !important;
+    color:white;
+    padding: 2px 6px;
+    margin-left: 8px;
+}

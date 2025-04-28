@@ -125,7 +125,7 @@ const Dashboard = () => {
         <input id="my-drawer" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content flex flex-col">
           {/* Page content here */}
-          <div className="flex gap-20">
+          <div className="flex gap-0">
             <div className="bg-black h-screen p-3 flex flex-col justify-between items-center">
               {dashboardIcon}
               <div className="avatar online relative">
