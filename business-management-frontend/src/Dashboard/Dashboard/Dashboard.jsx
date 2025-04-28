@@ -21,24 +21,30 @@ const Dashboard = () => {
         alt="Company logo Nexile Digital"
         className="rounded w-[40px] opacity-60 h-[40px]"
       />
+      <Link to={''}>
       <li className="bg-[#2c2c2c] text-[#bdbdbd] text-center p-2 flex justify-center text-xl rounded">
         <MdDashboardCustomize />
-      </li>
+      </li></Link>
+      <Link to={'businesses'}>
       <li className="bg-[#2c2c2c] text-[#bdbdbd] text-center p-2 flex justify-center text-xl rounded">
         <FaSuitcase />
-      </li>
+      </li></Link>
+      <Link to={'managers'}>
       <li className="bg-[#2c2c2c] text-[#bdbdbd] text-center p-2 flex justify-center text-xl rounded">
         <RiAdminFill />
-      </li>
+      </li></Link>
+      <Link to={'employees'}>
       <li className="bg-[#2c2c2c] text-[#bdbdbd] text-center p-2 flex justify-center text-xl rounded">
         <IoIosPeople />
-      </li>
+      </li></Link>
+      <Link to={'chat'}>
       <li className="bg-[#2c2c2c] text-[#bdbdbd] text-center p-2 flex justify-center text-xl rounded">
         <IoMdChatbubbles />
-      </li>
+      </li></Link>
+      <Link to={'businesses'}>
       <li className="bg-[#2c2c2c] text-[#bdbdbd] text-center p-2 flex justify-center text-xl rounded">
         <FaMoneyBill />
-      </li>
+      </li></Link>
       <li className="bg-[#2c2c2c] text-[#bdbdbd] text-center p-2 flex justify-center text-xl rounded">
         <MdEvent />
       </li>
@@ -62,29 +68,33 @@ const Dashboard = () => {
           className="rounded w-full h-full mb-5"
         />
       </li>
+      <Link to={'businesses'}>
       <li>
         <span className="text-center p-3 flex justify-start text-xl rounded">
           <FaSuitcase /> Businesses
         </span>
-      </li>
+      </li></Link>
+      <Link to={'managers'}>
       <li>
         <span className="text-center p-3 flex justify-start text-xl rounded">
           <RiAdminFill />
           Manager
         </span>
-      </li>
+      </li></Link>
+      <Link to={'employees'}>
       <li>
         <span className="text-center p-3 flex justify-start text-xl rounded">
           <IoIosPeople />
           Employee
         </span>
-      </li>
+      </li></Link>
+      <Link to={'chat'}>
       <li>
         <span className="text-center p-3 flex justify-start text-xl rounded">
           <IoMdChatbubbles />
           Chat
         </span>
-      </li>
+      </li></Link>
       <li>
         <span className="text-center p-3 flex justify-start text-xl rounded">
           <FaMoneyBill />
@@ -119,7 +129,7 @@ const Dashboard = () => {
             <div className="bg-black h-screen p-3 flex flex-col justify-between items-center">
               {dashboardIcon}
               <div className="avatar online relative">
-                <div className="w-8 rounded-full" onClick={toggleMenu} onMouseEnter={toggleMenu}>
+                <div className="w-8 rounded-full" onClick={toggleMenu}>
                   <img src={user?.avatar} />
                 </div>
                 <ul className={`menu menu-sm bg-base-200 rounded-box w-56 absolute left-10 top-0 ${show ? "block" : "hidden"}`}>

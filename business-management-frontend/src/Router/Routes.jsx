@@ -6,6 +6,10 @@ import Root from "../Dashboard/Root/Root";
 import AddUser from "../Authentication/AddUser/AddUser";
 import LogIn from "../Authentication/LogIn/LogIn";
 import PrivateRoute from "./PrivateRoute";
+import Businesses from "../Dashboard/OwnerBoard/Businesses";
+import Managers from "../Dashboard/OwnerBoard/Managers";
+import Employees from "../Dashboard/OwnerBoard/Employees";
+import Chat from "../Dashboard/OwnerBoard/Chat";
 
 export const router = createBrowserRouter([
     {
@@ -32,7 +36,23 @@ export const router = createBrowserRouter([
             {
                 path:'owner',
                 element:<OwnerBoard/>
-            }
+            },
+            {
+                path:'businesses',
+                element: <Businesses />
+            },
+            {
+                path:'managers',
+                element: <Managers />
+            },
+            {
+                path:'employees',
+                element: <Employees />
+            },
+            {
+                path:'chat',
+                element: <Chat />
+            },
         ]
     }
 ])
