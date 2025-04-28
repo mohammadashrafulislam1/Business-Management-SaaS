@@ -3,13 +3,16 @@ import { cloudinary } from "../utils/cloudinary.js";
 // add business controller
 export const addBusiness = async(req, res)=>{
     try{
-    const {name, description, logo, owner} = req.body;
+    const {name, description, owner} = req.body;
+    const logo = req.file; 
+    
+    console.log(req.body, logo)
     if(!name, !logo){
         return res.status(404).json({message: "Required fields are missing."})
     }
   
       // Upload logo to Cloudinary
-      const uploadResponse = await cloudinary.uploader.upload(logo, {
+      const uploadResponse = await cloudinary.uploader.upload(logo?.path, {
         folder: "business_logos", 
       });
   
