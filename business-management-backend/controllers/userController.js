@@ -100,7 +100,29 @@ export const getCurrentUser = async (req, res) => {
 };
 
 
+export const getManagers = async (req, res) => {
+  try {
+    const { businessProfiles } = req.query; // expecting comma-separated string or array
 
+    const businessProfileArray = Array.isArray(businessProfiles)
+      ? businessProfiles
+      : businessProfiles?.split(",").map((bp) => bp.trim());
+
+    const query = {
+      role: { $regex: /^manager$/i },
+    };
+
+    if (businessProfileArray?.length) {
+      query.businessProfile = { $in: businessProfileArray };
+    }
+
+    const managers = await userModel.find(query);
+    res.status(200).json(managers);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to fetch managers" });
+  }
+};
 
 
 // get all users (employee/employer) associated with business:

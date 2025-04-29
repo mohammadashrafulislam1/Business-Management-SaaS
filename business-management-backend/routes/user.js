@@ -1,5 +1,5 @@
 import express from "express";
-import { addUser, deleteUser, getCurrentUser, getUser, getUsersWithBusiness, loginUser, updateUser } from "../controllers/userController.js";
+import { addUser, deleteUser, getCurrentUser, getManagers, getUser, getUsersWithBusiness, loginUser, updateUser } from "../controllers/userController.js";
 import { upload } from "../middleware/multer.js";
 import { jwtMiddleware } from "../middleware/jwt.js";
 
@@ -12,6 +12,9 @@ userRouter.post('/add', upload.single('avatar'), addUser)
 userRouter.post('/login', loginUser)
 // get user with unique Id:
 // userRouter.get('/:_id', getUser) - showing error
+
+userRouter.get('/managers', getManagers)
+
 // update user with id route
 userRouter.put('/:_id', updateUser)
 // delete user with id route
